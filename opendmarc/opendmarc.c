@@ -2591,6 +2591,13 @@ mlfi_eom(SMFICTX *ctx)
 					       AUTHRESULTSHDR);
 				}
 			}
+			if (conf->conf_dolog)
+			{
+				syslog(LOG_INFO, "%s: SPF (%s): %s %s",
+				       dfc->mctx_jobid,
+				       spf_mode == DMARC_POLICY_SPF_ORIGIN_HELO ? "helo" : "mailfrom",
+				       use_domain, pass_fail);
+			}
 		}
 #endif /* WITH_SPF */
 
