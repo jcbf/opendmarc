@@ -495,7 +495,7 @@ opendmarc_policy_store_dkim(DMARC_POLICY_T *pctx, u_char *d_equal_domain, int dk
 	 * If so and if we have not already found
 	 * a best match, make this the temporary best match.
 	 */
-	if (opendmarc_policy_check_alignment(dp, pctx->from_domain, pctx->adkim))
+	if (opendmarc_policy_check_alignment(dp, pctx->from_domain, pctx->adkim) == 0)
 	{
 		if (pctx->dkim_domain != NULL)
 		{
