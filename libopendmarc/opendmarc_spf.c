@@ -823,58 +823,17 @@ opendmarc_spf_ipv6_cidr_check(char *ipv6_str, char *cidr_string)
 
 	for (i = 0; i < 8; i++)
 	{
-		int twobyte_mask, tmp_mask;
-
-		twobyte_mask = cidr_bits % 16;
-		tmp_mask = (0xFFFF << twobyte_mask);
-		low_iary.values[i] = low_iary.values[i] & tmp_mask;
-
-		tmp_mask = ((~tmp_mask) & 0xFFFF);
-		hi_iary.values[i]  = hi_iary.values[i] | tmp_mask;
-		if (cidr_bits < 16)
-			break;
-		cidr_bits = cidr_bits / 16;
-	}
-
-
-	taghi = FALSE;
-	taglo = FALSE;
-
-	for (i = 7; i >= 0; --i)
-	{
-		if (ip_iary.values[i] == low_iary.values[i] && ip_iary.values[i] == hi_iary.values[i])
+		if (cidr_bits >= 16)
 		{
-			continue;
+			cidr_bits -= 16;
 		}
-		if (ip_iary.values[i] == hi_iary.values[i])
+		else
 		{
-			taghi = TRUE;
-			continue;
-		}
-		if (ip_iary.values[i] == low_iary.values[i])
-		{
-			taglo = TRUE;
-			continue;
-		}
-		if (taghi == TRUE)
-		{
-			if (ip_iary.values[i] > hi_iary.values[i])
-			{
+			int mask = (0xFFFF << cidr_bits) & 0xFFFF;
+			if ((base_iary.values[i] & mask) != (ip_iary.values[i] & mask))
 				return FALSE;
-			}
-			continue;
-		}
-		if (taglo == TRUE)
-		{
-			if (ip_iary.values[i] < low_iary.values[i])
-			{
-				return FALSE;
-			}
-			continue;
-		}
-		if (ip_iary.values[i] < low_iary.values[i] || ip_iary.values[i] > hi_iary.values[i])
-		{
-			return FALSE;
+
+			cidr_bits = 0;
 		}
 	}
 	return TRUE;
