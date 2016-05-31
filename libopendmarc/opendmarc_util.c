@@ -157,7 +157,7 @@ opendmarc_util_dupe_argv(u_char **ary)
 u_char *
 opendmarc_util_cleanup(u_char *str, u_char *buf, size_t buflen)
 {
-	char *sp, *bp;
+	char *sp, *ep;
 
 	if (str == NULL || buf == NULL)
 	{
@@ -178,13 +178,14 @@ opendmarc_util_cleanup(u_char *str, u_char *buf, size_t buflen)
 	}
 	if (*sp == '\0')
 		return buf;
-	for (bp = buf; *sp != '\0'; ++sp)
+
+	for (ep = str + strlen(str) - 1; ; --ep)
 	{
-		if (isspace((int)*sp))
+		if (!isspace(*ep))
 			break;
-		*bp++ = *sp;
 	}
-	*bp = '\0';
+
+	memcpy(buf, sp, ep - sp + 1);
 	return buf;
 }
 
