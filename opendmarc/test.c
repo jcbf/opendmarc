@@ -674,7 +674,7 @@ dmarcf_testfiles(char *flist, bool strict, int verbose)
 
 #ifdef WITH_SPF
 	ms = mlfi_helo((SMFICTX *) tctx,
-	               dmarcf_test_envcheck("OPENDMARC_TEST_HELOHOST",
+	               dmarcf_test_envcheck("OPENDMARC_TEST_HELONAME",
                                             "localhost"));
 	if (MLFI_OUTPUT(ms, tverbose))
 	{
