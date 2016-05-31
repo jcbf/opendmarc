@@ -833,6 +833,19 @@ opendmarc_get_policy_to_enforce(DMARC_POLICY_T *pctx)
 	    pctx->dkim_alignment == DMARC_POLICY_DKIM_ALIGNMENT_PASS)
 		return DMARC_POLICY_PASS;
 
+	if (pctx->organizational_domain != NULL)
+	{
+		switch (pctx->sp)
+		{
+			case DMARC_RECORD_P_REJECT:
+				return DMARC_POLICY_REJECT;
+			case DMARC_RECORD_P_QUARANTINE:
+				return DMARC_POLICY_QUARANTINE;
+			case DMARC_RECORD_P_NONE:
+				return DMARC_POLICY_NONE;
+		}
+	}
+
 	switch (pctx->p)
 	{
 		case DMARC_RECORD_P_REJECT:
