@@ -2872,8 +2872,8 @@ mlfi_eom(SMFICTX *ctx)
 			                      dfc->mctx_envfrom);
 
 			dmarcf_dstring_printf(dfc->mctx_afrf,
-			                      "Source-IP: %s\n",
-			                      cc->cctx_ipstr);
+			                      "Source-IP: %s (%s)\n",
+			                      cc->cctx_ipstr, cc->cctx_host);
 
 			dmarcf_dstring_printf(dfc->mctx_afrf,
 			                      "Reported-Domain: %s\n\n",
