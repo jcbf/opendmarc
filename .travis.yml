@@ -1,0 +1,18 @@
+# .travis.yml -- Travis CI configuration for the MPS
+# See <http://about.travis-ci.org/docs/user/languages/c/>.
+language: c
+compiler:
+  - clang
+  - gcc
+notifications:
+  email:
+    - underspell@gmail.com
+before_install:
+  - sudo apt-get update -qq
+  - sudo apt-get install -y libmilter-dev libspf2-dev libspf2-2
+script:
+  -  autoreconf -v -i
+  -  ./configure --prefix=/usr --sysconfdir=/etc/opendmarc --disable-live-tests --with-sql-backend=mysql --with-spf 
+#--with-spf2-include=/usr/include/spf2 --with-spf2-lib=/usr/lib
+  -  make -s
+  -  make check
