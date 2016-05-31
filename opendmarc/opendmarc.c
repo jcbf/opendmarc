@@ -157,6 +157,7 @@ struct dmarcf_config
 	_Bool			conf_spfselfvalidate;
 #endif /* WITH_SPF */
 	_Bool			conf_ignoreauthclients;
+	_Bool			conf_holdquarantinedmessages;
 	unsigned int		conf_refcnt;
 	unsigned int		conf_dnstimeout;
 	struct config *		conf_data;
@@ -1289,6 +1290,10 @@ dmarcf_config_load(struct config *data, struct dmarcf_config *conf,
 		(void) config_get(data, "RecordAllMessages",
 		                  &conf->conf_recordall,
 		                  sizeof conf->conf_recordall);
+
+		(void) config_get(data, "HoldQuarantinedMessages",
+		                  &conf->conf_holdquarantinedmessages,
+		                  sizeof conf->conf_holdquarantinedmessages);
 
 		(void) config_get(data, "IgnoreAuthenticatedClients",
 		                  &conf->conf_ignoreauthclients,
@@ -2993,7 +2998,7 @@ mlfi_eom(SMFICTX *ctx)
 	  case DMARC_POLICY_QUARANTINE:		/* Explicit quarantine */
 		aresult = "fail";
 
-		if (conf->conf_rejectfail && random() % 100 < pct)
+		if (conf->conf_rejectfail && conf->conf_holdquarantinedmessages && random() % 100 < pct)
 		{
 			snprintf(replybuf, sizeof replybuf,
 			         "quarantined by DMARC policy for %s",
