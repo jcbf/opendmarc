@@ -1,3 +1,8 @@
+This is a mirror of the SourceForge git ( https://sourceforge.net/projects/opendmarc/ )
+with Andreas Schulze's https://andreasschulze.de/dmarc/opendmarc and integration with  
+Travis CI [![Build Status](https://travis-ci.org/jcbf/opendmarc-code.svg?branch=master)](https://travis-ci.org/jcbf/opendmarc-code)
+
+================
 OPENDMARC README
 ================
 
