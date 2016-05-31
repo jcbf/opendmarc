@@ -1479,6 +1479,29 @@ opendmarc_policy_fetch_utilized_domain(DMARC_POLICY_T *pctx, u_char *buf, size_t
 	return DMARC_PARSE_OKAY;
 }
 
+/**************************************************************************
+** OPENDMARC_GET_POLICY_SOURCE_TAKEN -- Which policy was actually used
+**
+**     Parameters:
+**             pctx    -- A Policy context
+**     Returns:
+**             DMARC_PARSE_ERROR_NULL_CTX      -- pctx == NULL
+**             DMARC_USED_POLICY_IS_P          -- Domain policy is used
+**             DMARC_USED_POLICY_IS_SP         -- Sub-domain policy is used
+***************************************************************************/
+OPENDMARC_STATUS_T
+opendmarc_get_policy_source_taken(DMARC_POLICY_T *pctx)
+{
+
+	if (pctx == NULL)
+		return DMARC_PARSE_ERROR_NULL_CTX;
+	if (pctx->organizational_domain != NULL && pctx->sp != DMARC_RECORD_P_UNSPECIFIED)
+		return DMARC_USED_POLICY_IS_SP;
+	else
+		return DMARC_USED_POLICY_IS_P;
+}
+
+
 /******************************************************************************
 ** OPENDMARC_POLICY_LIBRARY_DNS_HOOK -- Internal hook for dmarc_dns_get_record
 *******************************************************************************/

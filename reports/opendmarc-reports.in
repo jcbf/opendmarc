@@ -92,6 +92,8 @@ my $ipaddr;
 my $fromdomain;
 my $envdomain;
 my $dkimdomain;
+my $reason;
+my $comment;
 
 my $repdest;
 
@@ -593,6 +595,8 @@ foreach (@$domainset)
 	while ($dbi_a = $dbi_s->fetchrow_arrayref())
 	{
 		undef $msgid;
+		undef $reason;
+		undef $comment;
 
 		if (defined($dbi_a->[0]))
 		{
@@ -640,6 +644,12 @@ foreach (@$domainset)
 			case 1	{ $dispstr = "reject"; }
 			case 2	{ $dispstr = "none"; }
 			case 4	{ $dispstr = "quarantine"; }
+			case 5	{ $dispstr = "none"; $reason = "forwarded"; }
+			case 6	{ $dispstr = "none"; $reason = "sampled_out"; }
+			case 7	{ $dispstr = "none"; $reason = "trusted_forwarder"; }
+			case 8	{ $dispstr = "none"; $reason = "mailing_list"; }
+			case 9	{ $dispstr = "none"; $reason = "local_policy"; $comment = ""; }
+			case 10	{ $dispstr = "none"; $reason = "other"; $comment = ""; }
 			else	{ $dispstr = "unknown"; }
 		}
 
@@ -681,6 +691,16 @@ foreach (@$domainset)
 		print $tmpout "    <disposition>$dispstr</disposition>\n";
 		print $tmpout "    <dkim>$align_dkimstr</dkim>\n";
 		print $tmpout "    <spf>$align_spfstr</spf>\n";
+		if (defined($reason))
+		{
+			print $tmpout "    <reason>\n";
+			print $tmpout "      <type>$reason</type>\n";
+			if (defined($comment))
+			{
+				print $tmpout "      <comment>$comment</$comment>\n";
+			}
+			print $tmpout "    </reason>\n";
+		}
 		print $tmpout "   </policy_evaluated>\n";
 		print $tmpout "  </row>\n";
 		print $tmpout "  <identifiers>\n";
