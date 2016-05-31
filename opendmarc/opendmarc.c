@@ -134,7 +134,13 @@ struct dmarcf_connctx
 	char			cctx_host[MAXHOSTNAMELEN + 1];
 #if WITH_SPF
 	char			cctx_helo[MAXHOSTNAMELEN + 1];
-	char			cctx_rawmfrom[MAXHOSTNAMELEN + 1];
+	/*
+	 * ~opendkim-2.10.3/opendkim/opendkim.c, line 516 define mctx_envfrom[MAXADDRESS +1]
+	 * ~opendkim-2.10.3/libopendkim/dkim-internal.h, line 54 define MAXADDRESS = 256 byte
+	 * with a comment "biggest user@host we accept"
+	 * 64 byte are too small ...
+	 */
+	char			cctx_rawmfrom[256 + 1];
 #endif
 };
 typedef struct dmarcf_connctx * DMARCF_CONNCTX;
