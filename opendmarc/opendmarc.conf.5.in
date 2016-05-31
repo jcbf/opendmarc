@@ -230,8 +230,12 @@ is enabled.  Defaults to
 .I RequiredHeaders (Boolean)
 If set, the filter will ensure the header of the message conforms to the basic
 header field count restrictions laid out in RFC5322, Section 3.6.  Messages
-failing this test are rejected without further processing.  A From:
-field from which no domain name could be extracted will also be rejected.
+failing this test are logged.  A From:
+field from which no domain name could be extracted will also be logged.
+
+.TP
+.I RejectRequiredHeadersFailures (Boolean)
+Messages failing the above tests are rejected without further processing.
 
 .TP
 .I Socket (string)

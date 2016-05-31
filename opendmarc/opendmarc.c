@@ -143,6 +143,7 @@ typedef struct dmarcf_connctx * DMARCF_CONNCTX;
 struct dmarcf_config
 {
 	_Bool			conf_reqhdrs;
+	_Bool			conf_rejectreqhdrsfail;
 	_Bool			conf_afrf;
 	_Bool			conf_afrfnone;
 	_Bool			conf_rejectfail;
@@ -1265,6 +1266,10 @@ dmarcf_config_load(struct config *data, struct dmarcf_config *conf,
 		                  &conf->conf_reqhdrs,
 		                  sizeof conf->conf_reqhdrs);
 
+		(void) config_get(data, "RejectRequiredHeadersFailures",
+		                  &conf->conf_rejectreqhdrsfail,
+		                  sizeof conf->conf_rejectreqhdrsfail);
+
 		(void) config_get(data, "FailureReports",
 		                  &conf->conf_afrf,
 		                  sizeof conf->conf_afrf);
@@ -2129,7 +2134,14 @@ mlfi_eom(SMFICTX *ctx)
 				       dfc->mctx_jobid, reqhdrs_error);
 			}
 
-			return SMFIS_REJECT;
+			if (conf->conf_rejectreqhdrsfail) {
+				/* TODO: handle setreply failures */
+				snprintf(replybuf, sizeof replybuf,
+				         "RFC5322 header requirement error");
+				dmarcf_setreply(ctx, DMARC_REJECT_SMTP,
+				                DMARC_REJECT_ESC, replybuf);
+				return SMFIS_REJECT;
+			}
 		}
 	}
 
@@ -2159,7 +2171,7 @@ mlfi_eom(SMFICTX *ctx)
 			       dfc->mctx_jobid);
 		}
 
-		if (conf->conf_reqhdrs)
+		if (conf->conf_rejectreqhdrsfail)
 			return SMFIS_REJECT;
 		else
 			return SMFIS_ACCEPT;
