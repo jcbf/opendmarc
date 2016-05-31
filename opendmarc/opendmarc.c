@@ -1590,7 +1590,10 @@ mlfi_negotiate(SMFICTX *ctx,
 {
 	unsigned long reqactions = SMFIF_ADDHDRS|SMFIF_QUARANTINE;
 	unsigned long wantactions = 0;
-	unsigned long protosteps = (SMFIP_NOHELO |
+	unsigned long protosteps = (
+#if !WITH_SPF
+	                            SMFIP_NOHELO |
+#endif /* !WITH_SPF */
 	                            SMFIP_NOUNKNOWN |
 	                            SMFIP_NOBODY |
 	                            SMFIP_NODATA |
