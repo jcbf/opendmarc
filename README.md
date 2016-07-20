@@ -13,9 +13,7 @@ There is a web site at http://www.trusteddomain.org/opendmarc that is home for
 the latest updates.
 
 
-+--------------+
-| INTRODUCTION |
-+--------------+
+# INTRODUCTION 
 
 The OpenDMARC project is a community effort to develop and maintain an open
 source package for providing DMARC report generation and policy enforcement
@@ -29,9 +27,7 @@ for communicating mail traffic information between MTAs and mail filtering
 plug-in applications.  It was originally invented at Sendmail, Inc. but
 has also been adapted to other MTAs.
 
-+--------------+
-| DEPENDENCIES |
-+--------------+
+# DEPENDENCIES 
 
 To compile and operate, this package requires the following:
 
@@ -51,9 +47,7 @@ o If you are interested in tinkering with the build and packaging structure,
 	ltmain.sh (GNU libtool) 2.2.6 (or 1.5.26 after make maintainer-clean)
 
 
-+-----------------------+
-| RELATED DOCUMENTATION |
-+-----------------------+
+# RELATED DOCUMENTATION 
 
 The man page for opendmarc (the actual filter program) is present in the
 opendmarc directory of this source distribution.  There is additional
@@ -84,9 +78,7 @@ reports there, but please check first for older bugs already open,
 or even already closed, before opening a new issue.
 
 
-+---------------------+
-| DIRECTORY STRUCTURE |
-+---------------------+
+# DIRECTORY STRUCTURE 
 
 contrib		A collection of user contributed scripts that may be useful.
 
@@ -105,9 +97,7 @@ opendmarc	A milter-based filter application which uses libopendmarc (and
 		the milter protocol.
 
 
-+----------------+
-| RUNTIME ISSUES |
-+----------------+
+# RUNTIME ISSUES 
 
 WARNING: symbol 'X' not available
 
